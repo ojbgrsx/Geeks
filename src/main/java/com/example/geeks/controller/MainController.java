@@ -4,9 +4,11 @@ package com.example.geeks.controller;
 import com.example.geeks.models.Task;
 import com.example.geeks.repos.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.task.TaskRejectedException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 public class MainController {
@@ -31,6 +33,11 @@ public class MainController {
     @DeleteMapping("/tasks/{id}")
     void deleteTask(@PathVariable Long id){
         taskRepository.deleteById(id);
+    }
+
+    @GetMapping("/tasks/{id}")
+    Task findTask(@PathVariable Long id){
+        return taskRepository.findById(id).orElseThrow(() -> null);
     }
 
     @PutMapping("/tasks/{id}")
